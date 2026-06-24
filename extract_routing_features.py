@@ -1,3 +1,7 @@
+"""
+Extracts email routing features from Received headers and exports them to a CSV dataset.
+"""
+
 import argparse
 import json
 import math
@@ -64,10 +68,10 @@ def extract_routing_features(email: dict) -> dict:
 
     if not isinstance(received, list) or len(received) == 0:
         return {
-            "hop_count":                 None,
-            "total_delay_sec":           None,
-            "total_delay_log":           None,
-            "chain_consistency_ratio":   None,
+            "hop_count": None,
+            "total_delay_sec": None,
+            "total_delay_log": None,
+            "chain_consistency_ratio": None
         }
 
     hop_count = len(received)
@@ -100,10 +104,10 @@ def extract_routing_features(email: dict) -> dict:
         consistent_pairs = 0
 
         for i in range(len(sorted_hops) - 1):
-            by_field   = sorted_hops[i].get("by", "")
+            by_field = sorted_hops[i].get("by", "")
             from_field = sorted_hops[i + 1].get("from", "")
 
-            by_domains   = extract_domains_from_field(by_field)
+            by_domains = extract_domains_from_field(by_field)
             from_domains = extract_domains_from_field(from_field)
 
             if not by_domains or not from_domains:
@@ -119,10 +123,10 @@ def extract_routing_features(email: dict) -> dict:
             chain_consistency_ratio = round(consistent_pairs / verifiable_pairs, 4)
 
     return {
-        "hop_count":               hop_count,
-        "total_delay_sec":         total_delay_sec,
-        "total_delay_log":         total_delay_log,
-        "chain_consistency_ratio": chain_consistency_ratio,
+        "hop_count": hop_count,
+        "total_delay_sec": total_delay_sec,
+        "total_delay_log": total_delay_log,
+        "chain_consistency_ratio": chain_consistency_ratio
     }
 
 
@@ -170,8 +174,8 @@ def main():
     parser.add_argument("--output", required=True)
     args = parser.parse_args()
 
-    print(f"\nLoading emails from: {args.folder}")
-    emails = load_emails(args.folder)
+    print(f"\nLoading emails from: {args.input}")
+    emails = load_emails(args.input)
     print(f"\nTotal loaded emails: {len(emails)}")
 
     if not emails:

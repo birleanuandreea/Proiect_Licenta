@@ -252,27 +252,26 @@ def load_emails(folder: str) -> list[dict]:
 def extract_and_encode(emails: list[dict]) -> pd.DataFrame:
     records = []
     for email in emails:
-        spf_raw          = parse_spf(email)
+        spf_raw = parse_spf(email)
         dkim_result_raw  = parse_dkim_result(email)
-        dkim_algo_raw    = parse_dkim_algorithm(email)
+        dkim_algo_raw = parse_dkim_algorithm(email)
         dmarc_result_raw = parse_dmarc_result(email)
         dmarc_policy_raw = parse_dmarc_policy(email)
-        compauth_raw     = parse_compauth(email)
+        compauth_raw = parse_compauth(email)
 
         records.append({
-            "spf_result_raw":      spf_raw,
-            "dkim_result_raw":     dkim_result_raw,
-            "dkim_algorithm_raw":  dkim_algo_raw,
-            "dmarc_result_raw":    dmarc_result_raw,
-            "dmarc_policy_raw":    dmarc_policy_raw,
-            "compauth_raw":        compauth_raw,
-
-            "spf_result":          encode_spf(spf_raw),
-            "dkim_result":         encode_dkim_result(dkim_result_raw),
-            "dkim_algorithm":      encode_dkim_algorithm(dkim_algo_raw),
-            "dmarc_result":        encode_dmarc_result(dmarc_result_raw),
-            "dmarc_policy":        encode_dmarc_policy(dmarc_policy_raw),
-            "compauth":            encode_compauth(compauth_raw),
+            "spf_result_raw": spf_raw,
+            "dkim_result_raw": dkim_result_raw,
+            "dkim_algorithm_raw": dkim_algo_raw,
+            "dmarc_result_raw": dmarc_result_raw,
+            "dmarc_policy_raw": dmarc_policy_raw,
+            "compauth_raw": compauth_raw,
+            "spf_result": encode_spf(spf_raw),
+            "dkim_result": encode_dkim_result(dkim_result_raw),
+            "dkim_algorithm": encode_dkim_algorithm(dkim_algo_raw),
+            "dmarc_result": encode_dmarc_result(dmarc_result_raw),
+            "dmarc_policy": encode_dmarc_policy(dmarc_policy_raw),
+            "compauth": encode_compauth(compauth_raw),
         })
 
     return pd.DataFrame(records)
@@ -284,8 +283,8 @@ def main():
     parser.add_argument("--output", required=True)
     args = parser.parse_args()
 
-    print(f"\nLoading emails from: {args.folder}")
-    emails = load_emails(args.folder)
+    print(f"\nLoading emails from: {args.input}")
+    emails = load_emails(args.input)
     print(f"\nTotal loaded emails: {len(emails)}")
 
     if not emails:
