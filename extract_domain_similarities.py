@@ -82,8 +82,13 @@ def get_first_tuiasi_from_to(email: dict) -> str:
 
 def get_return_path_domain(email: dict) -> str:
     rp = email.get("return-path", "")
+    
+    if isinstance(rp, list):
+        rp = rp[0] if rp else ""
     if not isinstance(rp, str) or not rp.strip():
         return ""
+    rp = rp.strip().strip("<>")
+    
     return extract_registered_domain(rp)
 
 
